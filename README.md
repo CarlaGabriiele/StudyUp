@@ -18,6 +18,6 @@ Plataforma de estudos com foco no ENEM
 
 Este projeto tem como objetivo desenvolver uma plataforma de estudos voltada para estudantes que desejam se preparar para o ENEM.
 
-A plataforma contará com banco de questões, simulados, aulas explicativas e ferramentas de acompanhamento de desempenho, proporcionando um aprendizado mais eficiente e acessível.
+A plataforma contará com banco de questões, simulados, aulas explicativas e ferramentas de acompanhamento de desempenho em questões, proporcionando um aprendizado mais eficiente e acessível.
 
 ---
