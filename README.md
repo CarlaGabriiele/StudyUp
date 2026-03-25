@@ -29,8 +29,8 @@ Neste projeto, será utilizado como tecnologia de frontend, sendo responsável p
 
 
 ## Cronograma 
-| Semana | Período | Etapa | Atividades Detalhadas | Status |
-|--------|--------|-------|------------------------|--------|
+| Semana | Período | Etapa | Atividades Detalhadas | Responsável |
+|--------|--------|-------|------------------------|------------|
 | 1 | Mar/Abr | Planejamento | Definição do tema, nome do projeto e objetivos gerais | ☐ |
 | 2 | Mar/Abr | Planejamento | Levantamento de requisitos funcionais (login, cadastro, estudos) | ☐ |
 | 3 | Mar/Abr | Planejamento | Levantamento de requisitos não funcionais (segurança, desempenho, stateless) | ☐ |
