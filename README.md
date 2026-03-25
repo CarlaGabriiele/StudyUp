@@ -11,7 +11,7 @@ Plataforma de estudos com foco no ENEM
 - Carla Gabriele da Silva Santos
 - Emmily Kettily Bezerra da Silva
 - Ingrid Monteiro de Melo
-- 
+  
 ---
 
 ## Descrição do Tema
