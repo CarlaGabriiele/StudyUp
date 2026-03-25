@@ -1,1 +1,3 @@
 # StudyUp
+
+### Equipe:
