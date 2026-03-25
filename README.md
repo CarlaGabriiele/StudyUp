@@ -1,4 +1,4 @@
-=<h1 align="center">StudyUp</h1>
+<h1 align="center">StudyUp</h1>
 
 <p align="center">
 Plataforma de estudos com foco no ENEM 
