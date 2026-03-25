@@ -29,14 +29,14 @@ Neste projeto, será utilizado como tecnologia de frontend, sendo responsável p
 
 
 ## Cronograma 
-| Semana | Período | Etapa | Atividades Detalhadas | Responsável |
+| Semana | Período | Etapa | Atividades Detalhadas | Status |
 |--------|--------|-------|------------------------|------------|
-| 1 | Mar/Abr | Planejamento | Definição do tema, nome do projeto e objetivos gerais | ☐ |
-| 2 | Mar/Abr | Planejamento | Levantamento de requisitos funcionais (login, cadastro, estudos) | ☐ |
-| 3 | Mar/Abr | Planejamento | Levantamento de requisitos não funcionais (segurança, desempenho, stateless) | ☐ |
-| 4 | Mar/Abr | Planejamento | Definição das funcionalidades principais do sistema | ☐ |
-| 5 | Mar/Abr | Planejamento | Definição das tecnologias (NextJS, API REST, JSON) | ☐ |
-| 6 | Mar/Abr | Documentação | Início da documentação (introdução, objetivos, justificativa) | ☐ |
+| 1 | Março | Planejamento | Definição do tema, nome do projeto e objetivos gerais | ☐ |
+| 2 | Março | Planejamento | Levantamento de requisitos funcionais (login, cadastro, estudos) | ☐ |
+| 3 | Abril | Planejamento | Levantamento de requisitos não funcionais (segurança, desempenho, stateless) | ☐ |
+| 4 | Abril | Planejamento | Definição das funcionalidades principais do sistema | ☐ |
+| 5 | Abril | Planejamento | Definição das tecnologias (NextJS, API REST, JSON) | ☐ |
+| 6 | Abril | Documentação | Início da documentação (introdução, objetivos, justificativa) | ☐ |
 | 7 | Maio | Modelagem | Criação dos fluxos de uso do sistema | ☐ |
 | 8 | Maio | Modelagem | Definição das rotas do frontend (NextJS) | ☐ |
 | 9 | Maio | Modelagem | Definição dos endpoints da API REST | ☐ |
