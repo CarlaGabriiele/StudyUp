@@ -30,6 +30,9 @@ def criar_questao(questao: Questao, session: Session = Depends(get_session)):
 def listar_questoes(session: Session = Depends(get_session)):
     questoes = session.exec(select(Questao)).all()
     return questoes
+    
+##@app.post("/simulado/{simulado_id}", response_model=Simulado)
+##def criar_simulado(simulado_id: int, simulado_criado: Simulado)
 
 @app.put("/simulados/{simulado_id}", response_model=Simulado)
 def atualizar_simulado(simulado_id: int, simulado_atualizado: Simulado, session: Session = Depends(get_session)):
