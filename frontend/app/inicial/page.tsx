@@ -22,8 +22,9 @@ export default function HomePage() {
           </div>
 
           <div style={{ flex: '1', minWidth: '300px', display: 'flex', justifyContent: 'center' }}>
+            {/* Ilustração dos estudantes (substitua a URL depois se preferir) */}
             <img 
-              src="/alunos.png" 
+              src="https://img.freepik.com/vetores-gratis/grupo-de-jovens-estudando-juntos_23-2148520771.jpg" 
               alt="Estudantes estudando" 
               style={{ maxWidth: '100%', height: 'auto', borderRadius: '12px' }}
             />

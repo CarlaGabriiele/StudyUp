@@ -20,12 +20,15 @@ export default function LoginPage() {
 
     const data = await response.json();
     
-    if (data.access_token) {
+    // Se a resposta HTTP for de sucesso (200 OK)
+    if (response.ok) {
       alert(data.message);
+      // Salva o token de acesso no navegador
       localStorage.setItem("studyup_token", data.access_token);
       router.push("/"); 
     } else {
-      alert(data.error);
+      // Se der erro (401 Unauthorized), exibe o erro do FastAPI (.detail)
+      alert(data.detail || "Email ou senha incorretos.");
     }
   }
 

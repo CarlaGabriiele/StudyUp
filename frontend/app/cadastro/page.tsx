@@ -21,11 +21,13 @@ export default function CadastroPage() {
 
     const data = await response.json();
     
-    if (data.message) {
+    // Se a resposta HTTP for de sucesso (200-299)
+    if (response.ok) {
       alert(data.message);
       router.push("/login");
     } else {
-      alert(data.error);
+      // Pega a mensagem do HTTPException do FastAPI (.detail)
+      alert(data.detail || "Erro ao realizar o cadastro.");
     }
   }
 
@@ -82,8 +84,7 @@ export default function CadastroPage() {
         </form>
       </section>
 
-      <p className="mt-6 text-gray-600">
-        Já possui conta? <Link href="/login" className="text-blue-600 font-medium hover:underline">Entrar</Link>
+      <p className="mt-6 text-gray-600"> Já possui conta? <Link href="/login" className="text-blue-600 font-medium hover:underline">Entrar</Link>
       </p>
     </main>
   );
