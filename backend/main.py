@@ -1,10 +1,10 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import OAuth2PasswordBearer
-from pydantic import BaseModel
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from pydantic import BaseModel, EmailStr, Field
 from sqlmodel import Session, select
 from database import create_db_and_tables, get_session
-from models import Usuario, Questao, Simulado
+from models import Usuario, Questao, Simulado, ConteudoTeorico, RegistroDesempenho
 from passlib.context import CryptContext
 from jose import jwt, JWTError
 from datetime import datetime, timedelta, timezone
@@ -65,14 +65,24 @@ def on_startup():
     create_db_and_tables()
 
 
+# ================= SCHEMAS DE VALIDAÇÃO (PYDANTIC) =================
+
 class RegisterData(BaseModel):
-    nome: str
-    email: str
-    senha: str
+    nome: str = Field(..., min_length=3)
+    email: EmailStr
+    senha: str = Field(..., min_length=8)
 
 class LoginData(BaseModel):
-    email: str
+    email: EmailStr
     senha: str
+
+class ResponderQuestaoData(BaseModel):
+    questao_id: int
+    alternativa_escolhida: str
+    tempo_gasto: int
+
+
+# ================= AUTENTICAÇÃO E PERFIL =================
 
 @app.post("/register", status_code=status.HTTP_201_CREATED)
 def register(data: RegisterData, session: Session = Depends(get_session)):
@@ -93,18 +103,78 @@ def register(data: RegisterData, session: Session = Depends(get_session)):
         raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
 
 @app.post("/login")
-def login(data: LoginData, session: Session = Depends(get_session)):
-    usuario = session.exec(select(Usuario).where(Usuario.email == data.email)).first()
+def login(form_data: OAuth2PasswordRequestForm = Depends(), session: Session = Depends(get_session)):
+    # O padrão OAuth2 envia o e-mail através do campo "username"
+    usuario = session.exec(select(Usuario).where(Usuario.email == form_data.username)).first()
 
-    if usuario and verificar_senha(data.senha, usuario.senha):
+    if usuario and verificar_senha(form_data.password, usuario.senha):
         token = criar_token(data={"sub": usuario.email})
         return {
             "message": f"Bem-vindo de volta, {usuario.nome}!",
-            "access_token": token
+            "access_token": token,
+            "token_type": "bearer" # Obrigatório para o Swagger reconhecer o token
         }
 
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Email ou senha incorretos.")
+    
+@app.get("/me")
+def obter_perfil_usuario(current_user: Usuario = Depends(get_current_user)):
+    return {
+        "id": current_user.id,
+        "nome": current_user.nome,
+        "email": current_user.email
+    }
 
+
+# ================= CONTEÚDOS E PRÁTICA =================
+
+@app.get("/conteudos/videoaulas")
+def listar_videoaulas(session: Session = Depends(get_session), current_user: Usuario = Depends(get_current_user)):
+    return session.exec(select(ConteudoTeorico)).all()
+
+@app.post("/questoes/responder")
+def responder_questao(data: ResponderQuestaoData, session: Session = Depends(get_session), current_user: Usuario = Depends(get_current_user)):
+    questao = session.get(Questao, data.questao_id)
+    if not questao:
+        raise HTTPException(status_code=404, detail="Questão não encontrada.")
+    
+    acertou = (data.alternativa_escolhida.upper() == questao.resposta_correta.upper())
+    
+    registro = RegistroDesempenho(
+        estudante_id=current_user.id,
+        questao_id=questao.id,
+        resultado=acertou,
+        tempo_gasto=data.tempo_gasto
+    )
+    session.add(registro)
+    session.commit()
+    
+    return {
+        "acertou": acertou,
+        "gabarito": questao.resposta_correta,
+        "mensagem": "Parabéns, você acertou!" if acertou else "Não foi dessa vez, tente dar uma revisada no assunto!"
+    }
+
+
+# ================= INTELIGÊNCIA DE DADOS =================
+
+@app.get("/ia/relatorio-desempenho")
+def relatorio_desempenho(session: Session = Depends(get_session), current_user: Usuario = Depends(get_current_user)):
+    registros = session.exec(select(RegistroDesempenho).where(RegistroDesempenho.estudante_id == current_user.id)).all()
+    
+    total = len(registros)
+    acertos = sum(1 for r in registros if r.resultado)
+    erros = total - acertos
+    
+    return {
+        "total_questoes_respondidas": total,
+        "acertos": acertos,
+        "erros": erros,
+        "dica_ia": "Em breve, o StudyUp vai te sugerir videoaulas com base nos seus erros!"
+    }
+
+
+# ================= CRUD DE QUESTÕES (ORIGINAL) =================
 
 @app.post("/questoes", status_code=status.HTTP_201_CREATED)
 def criar_questao(questao: Questao, session: Session = Depends(get_session), current_user: Usuario = Depends(get_current_user)):
@@ -149,6 +219,8 @@ def deletar_questao(questao_id: int, session: Session = Depends(get_session), cu
     session.commit()
     return {"message": "Questão deletada com sucesso!"}
 
+
+# ================= CRUD DE SIMULADOS (ORIGINAL) =================
 
 @app.post("/simulados", status_code=status.HTTP_201_CREATED)
 def criar_simulado(simulado: Simulado, session: Session = Depends(get_session), current_user: Usuario = Depends(get_current_user)):

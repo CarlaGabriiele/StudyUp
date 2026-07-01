@@ -1,21 +1,50 @@
-from typing import Optional
-from sqlmodel import Field, SQLModel
+from sqlmodel import SQLModel, Field, Relationship
+from typing import List, Optional
+from datetime import datetime
+
+# Tabela intermediária para o relacionamento Many-to-Many
+class SimuladoQuestao(SQLModel, table=True):
+    simulado_id: Optional[int] = Field(default=None, foreign_key="simulado.id", primary_key=True)
+    questao_id: Optional[int] = Field(default=None, foreign_key="questao.id", primary_key=True)
+
+class RegistroDesempenho(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    estudante_id: int = Field(foreign_key="usuario.id")
+    questao_id: int = Field(foreign_key="questao.id")
+    resultado: bool # True = Acerto, False = Erro
+    tempo_gasto: int # em segundos
+
+    estudante: "Usuario" = Relationship(back_populates="registros_desempenho")
+    questao: "Questao" = Relationship(back_populates="registros_desempenho")
 
 class Usuario(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     nome: str
     email: str = Field(unique=True, index=True)
-    senha: str # Vamos manter simples por agora, sem criptografia complexa
+    senha: str
+    
+    registros_desempenho: List[RegistroDesempenho] = Relationship(back_populates="estudante")
 
 class Questao(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     enunciado: str
-    materia: str  
-    alternativa_correta: str 
-    ano_enem: int
+    alternativas: str # Pode salvar como JSON em string
+    resposta_correta: str
+    nivel_dificuldade: str
+    disciplina: str
+    
+    simulados: List["Simulado"] = Relationship(back_populates="questoes", link_model=SimuladoQuestao)
+    registros_desempenho: List[RegistroDesempenho] = Relationship(back_populates="questao")
 
 class Simulado(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    nome: str 
-    quantidade_questoes: int
-    ativo: bool = True
+    titulo: str
+    descricao: Optional[str] = None
+    
+    questoes: List[Questao] = Relationship(back_populates="simulados", link_model=SimuladoQuestao)
+
+class ConteudoTeorico(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    titulo: str
+    url_video: str
+    disciplina: str
