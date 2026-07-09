@@ -39,7 +39,6 @@ def criar_token(data: dict):
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-
 def get_current_user(token: str = Depends(oauth2_scheme), session: Session = Depends(get_session)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -76,6 +75,13 @@ class LoginData(BaseModel):
     email: EmailStr
     senha: str
 
+class EsqueciSenhaData(BaseModel):
+    email: EmailStr
+
+class RedefinirSenhaData(BaseModel):
+    token: str
+    nova_senha: str = Field(..., min_length=8)
+
 class ResponderQuestaoData(BaseModel):
     questao_id: int
     alternativa_escolhida: str
@@ -104,7 +110,6 @@ def register(data: RegisterData, session: Session = Depends(get_session)):
 
 @app.post("/login")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), session: Session = Depends(get_session)):
-    # O padrão OAuth2 envia o e-mail através do campo "username"
     usuario = session.exec(select(Usuario).where(Usuario.email == form_data.username)).first()
 
     if usuario and verificar_senha(form_data.password, usuario.senha):
@@ -112,7 +117,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), session: Session = D
         return {
             "message": f"Bem-vindo de volta, {usuario.nome}!",
             "access_token": token,
-            "token_type": "bearer" # Obrigatório para o Swagger reconhecer o token
+            "token_type": "bearer"
         }
 
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Email ou senha incorretos.")
@@ -124,6 +129,42 @@ def obter_perfil_usuario(current_user: Usuario = Depends(get_current_user)):
         "nome": current_user.nome,
         "email": current_user.email
     }
+
+@app.post("/esqueci-senha")
+def esqueci_senha(data: EsqueciSenhaData, session: Session = Depends(get_session)):
+    usuario = session.exec(select(Usuario).where(Usuario.email == data.email)).first()
+    
+    if not usuario:
+        return {"message": "Se o email estiver registado, receberá as instruções."}
+    
+    token_recuperacao = criar_token(data={"sub": usuario.email, "tipo": "recuperacao"})
+    
+    return {
+        "message": "Se o email estiver registado, receberá as instruções.",
+        "token_teste": token_recuperacao 
+    }
+
+@app.post("/redefinir-senha")
+def redefinir_senha(data: RedefinirSenhaData, session: Session = Depends(get_session)):
+    try:
+        payload = jwt.decode(data.token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get("sub")
+        tipo: str = payload.get("tipo")
+        
+        if email is None or tipo != "recuperacao":
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Token inválido ou expirado.")
+    except JWTError:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Token inválido ou expirado.")
+        
+    usuario = session.exec(select(Usuario).where(Usuario.email == email)).first()
+    if not usuario:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Utilizador não encontrado.")
+        
+    usuario.senha = criar_hash_senha(data.nova_senha)
+    session.add(usuario)
+    session.commit()
+    
+    return {"message": "A sua senha foi redefinida com sucesso!"}
 
 
 # ================= CONTEÚDOS E PRÁTICA =================

@@ -12,10 +12,16 @@ export default function LoginPage() {
   async function handleLogin(e: any) {
     e.preventDefault();
 
+    // 1. Criar um formato de formulário compatível com o OAuth2 do FastAPI
+    const formData = new URLSearchParams();
+    formData.append("username", email); // O FastAPI exige o nome 'username'
+    formData.append("password", senha); // O FastAPI exige o nome 'password'
+
     const response = await fetch("http://127.0.0.1:8000/login", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, senha }),
+      // 2. Alterar o Content-Type para formulário
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: formData,
     });
 
     const data = await response.json();
@@ -25,7 +31,13 @@ export default function LoginPage() {
       localStorage.setItem("studyup_token", data.access_token);
       router.push("/"); 
     } else {
-      alert(data.detail || "Email ou senha incorretos.");
+      // 3. Mesma lógica de tratamento de erros que aplicámos no registo
+      if (Array.isArray(data.detail)) {
+        const mensagensErro = data.detail.map((erro: any) => erro.msg).join("\n");
+        alert("Erro de validação:\n" + mensagensErro);
+      } else {
+        alert(data.detail || "Email ou senha incorretos.");
+      }
     }
   }
 
@@ -153,15 +165,15 @@ export default function LoginPage() {
                 required
               />
 
-              <span style={{ 
+              <Link href="/esqueci-senha" style={{ 
                 textAlign: 'right', 
                 fontSize: '0.85rem', 
                 color: '#555555', 
                 marginTop: '5px',
-                cursor: 'pointer' 
+                textDecoration: 'none' 
               }}>
                 [Esqueci minha senha]
-              </span>
+              </Link>
             </div>
 
             <button 
@@ -193,4 +205,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
