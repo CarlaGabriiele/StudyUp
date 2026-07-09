@@ -9,6 +9,13 @@ class LoginData(BaseModel):
     email: EmailStr
     senha: str
 
+class EsqueciSenhaData(BaseModel):
+    email: EmailStr
+
+class RedefinirSenhaData(BaseModel):
+    token: str
+    nova_senha: str = Field(..., min_length=8)
+
 class ResponderQuestaoData(BaseModel):
     questao_id: int
     alternativa_escolhida: str

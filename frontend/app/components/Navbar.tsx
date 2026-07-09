@@ -7,17 +7,15 @@ export default function Navbar() {
   const [isLogged, setIsLogged] = useState(false);
   const router = useRouter();
 
-  // Verifica se existe um token de usuário logado quando a página carrega
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('studyup_token');
     if (token) {
       setIsLogged(true);
     }
   }, []);
 
-  // Função para deslogar
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('studyup_token');
     setIsLogged(false);
     router.push('/');
   };

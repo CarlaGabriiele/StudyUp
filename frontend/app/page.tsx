@@ -1,10 +1,64 @@
 "use client";
-import React from 'react';
 
-export default function HomePage() {
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+export default function Home() {
+  const [isLogged, setIsLogged] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("studyup_token");
+    if (token) {
+      setIsLogged(true);
+    }
+  }, []);
+
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', fontFamily: 'sans-serif', color: '#333' }}>
       
+      {/* Navbar Integrada na Home - Atualizada para o novo design condicional */}
+      <nav style={{ 
+        display: "flex", 
+        justifyContent: "space-between", 
+        alignItems: "center", 
+        padding: "20px 50px", 
+        backgroundColor: "#0d1b2a", // Mantendo a cor da hero section para ficar contínuo
+        color: "#ffffff" 
+      }}>
+        <div style={{ fontSize: "1.8rem", fontWeight: "bold", fontFamily: "serif", letterSpacing: "1px" }}>
+          StudyUp
+        </div>
+        <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+          {isLogged ? (
+            <>
+              <Link href="/dashboard" style={{ textDecoration: "none", color: "#ffffff", fontWeight: "bold" }}>
+                Meu Dashboard
+              </Link>
+              <button 
+                onClick={() => {
+                  localStorage.removeItem('studyup_token');
+                  setIsLogged(false);
+                }}
+                style={{ background: '#e74c3c', color: 'white', border: 'none', padding: '8px 20px', cursor: 'pointer', borderRadius: '6px', fontWeight: 'bold' }}
+              >
+                Sair
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" style={{ textDecoration: "none", color: "#eaddca", fontWeight: "bold", padding: "10px 20px" }}>
+                Entrar
+              </Link>
+              <Link href="/cadastro" style={{ textDecoration: "none", color: "#0f223d", backgroundColor: "#eaddca", fontWeight: "bold", padding: "10px 24px", borderRadius: "8px", transition: "0.3s" }}>
+                Cadastrar
+              </Link>
+            </>
+          )}
+        </div>
+      </nav>
+
       {/* Seção Principal (Hero Section) */}
       <section style={{ backgroundColor: '#0d1b2a', color: '#ffffff', padding: '60px 20px', textAlign: 'left' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '40px' }}>

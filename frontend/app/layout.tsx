@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,10 +28,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        {/* Aqui nós adicionamos a Navbar para aparecer em todas as páginas */}
-        <Navbar />
+        {/* Navbar global removida para não duplicar na página inicial e não interferir no design do Login/Cadastro */}
         
-        {/* O conteúdo das outras páginas será renderizado aqui dentro */}
+        {/* O conteúdo de cada página será renderizado aqui dentro */}
         <main className="flex-1">
           {children}
         </main>

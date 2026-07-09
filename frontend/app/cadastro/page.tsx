@@ -19,19 +19,30 @@ export default function CadastroPage() {
       return;
     }
 
-    const response = await fetch("http://127.0.0.1:8000/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, email, senha }),
-    });
+    try {
+      const response = await fetch("http://127.0.0.1:8000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, email, senha }),
+      });
 
-    const data = await response.json();
-    
-    if (response.ok) {
-      alert(data.message || "Cadastro realizado com sucesso!");
-      router.push("/login");
-    } else {
-      alert(data.detail || "Erro ao realizar o cadastro.");
+      const data = await response.json();
+      
+      if (response.ok) {
+        alert(data.message || "Cadastro realizado com sucesso!");
+        router.push("/login");
+      } else {
+        // Tratamento do erro 422 do FastAPI
+        if (Array.isArray(data.detail)) {
+          // Pega todas as mensagens de validação e junta numa string
+          const mensagensErro = data.detail.map((erro: any) => erro.msg).join("\n");
+          alert("Erro de validação:\n" + mensagensErro);
+        } else {
+          alert(data.detail || "Erro ao realizar o cadastro.");
+        }
+      }
+    } catch (error) {
+      alert("Erro ao conectar com o servidor. Verifique se o backend está rodando.");
     }
   }
 
@@ -56,7 +67,7 @@ export default function CadastroPage() {
           src="/cadastro-banner.png" 
           alt="StudyUp - Seu futuro começa com uma decisão" 
           style={{ 
-            width: '100', 
+            width: '100%', 
             height: '80%', 
             objectFit: 'cover', 
             objectPosition: 'bottom center' 
