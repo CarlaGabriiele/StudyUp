@@ -44,11 +44,10 @@ Neste projeto, será utilizado como tecnologia de frontend, sendo responsável p
 | 11 | Junho | Ambiente | Criação do repositório no GitHub e organização do projeto | ☐ |
 | 12 | Junho | Ambiente | Configuração do projeto NextJS (frontend) | ☐ |
 | 13 | Junho | Ambiente | Criação da estrutura inicial da API REST (backend) | ☐ |
-| 14 | Junho | Ambiente | Criação do Dockerfile e containerização com Docker (IaC) | ☐ |
-| 15 | Julho | Desenvolvimento | Criação do layout base (navbar, páginas principais) | ☐ |
-| 16 | Julho | Desenvolvimento | Criação de componentes reutilizáveis no frontend | ☐ |
-| 17 | Julho | Desenvolvimento | Implementação do cadastro de usuário (API + frontend) | ☐ |
-| 18 | Julho | Desenvolvimento | Implementação do login com autenticação JWT | ☐ |
+| 14 | Julho | Desenvolvimento | Criação do layout base (navbar, páginas principais) | ☐ |
+| 15 | Julho | Desenvolvimento | Criação de componentes reutilizáveis no frontend | ☐ |
+| 16 | Julho | Desenvolvimento | Implementação do cadastro de usuário (API + frontend) | ☐ |
+| 17 | Julho | Desenvolvimento | Implementação do login com autenticação JWT | ☐ |
 | 19 | Agosto | Desenvolvimento | Implementação das funcionalidades principais (ex: gestão de estudos) | ☐ |
 | 20 | Agosto | Integração | Integração completa entre frontend e backend via API | ☐ |
 | 21 | Agosto | Validação | Validação de dados e tratamento de erros | ☐ |
