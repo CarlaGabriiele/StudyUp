@@ -52,44 +52,47 @@ export default function LoginPage() {
       {/* LADO ESQUERDO: Imagem/Banner Promocional com o Texto Interno */}
       <div style={{ 
         flex: '1', 
-        backgroundColor: '#0f223d', 
+        backgroundColor: '#0c1b33', // Azul escuro idêntico ao Figma
         display: 'flex', 
         alignItems: 'flex-end', 
         justifyContent: 'center',
         padding: '0px',
         overflow: 'hidden',
-        position: 'relative' // Mantido para que o texto se oriente por este container
+        position: 'relative' // Referência para o posicionamento absoluto do texto
       }}>
         <img 
           src="/login-banner.png" 
           alt="StudyUp" 
           style={{ 
             width: '100%', 
-            height: '100%', 
-            objectFit: 'cover',
-            objectPosition: 'bottom center'
+            height: '65%', 
+            objectFit: 'cover', 
+            objectPosition: 'bottom center' 
           }} 
         />
 
-        {/* TEXTO INSERIDO NO LUGAR CORRETO (Dentro do container relativo) */}
         <div style={{
           position: 'absolute',
-          right: '40px',
-          bottom: '180px', // Movido um pouco mais para cima para não cobrir a mesa da ilustração
-          maxWidth: '260px',
+          right: '5%',
+          bottom: '33%',
+          maxWidth: '280px',
           textAlign: 'right',
           color: '#ffffff',
-          fontFamily: 'serif',
-          lineHeight: '1.2',
+          fontFamily: 'Georgia, serif',
+          lineHeight: '1.1',
           zIndex: 10
         }}>
-          <span style={{ fontSize: '1.8rem', display: 'block' }}>Seu</span>
-          <span style={{ fontSize: '2.4rem', fontWeight: 'bold', display: 'block' }}>futuro</span>
-          <span style={{ fontSize: '2.4rem', fontWeight: 'bold', display: 'block', color: '#eaddca' }}>Começa</span>
-          <span style={{ fontSize: '1.6rem', display: 'block' }}>Com uma</span>
-          <span style={{ fontSize: '2.6rem', fontWeight: 'bold', display: 'block', color: '#98bae3' }}>decisão.</span>
+          <div style={{ display: 'flex', fontWeight: 'bold', flexDirection: 'column', gap: '4px' }}>
+            <span style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Seu</span>
+            <span style={{ fontSize: '3rem', fontWeight: 'bold' }}>futuro</span>
+            <span style={{ fontSize: '3rem', fontWeight: 'bold' }}>Começa</span>
+            <span style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>Com uma</span>
+            <span style={{
+              fontSize: '3rem', fontWeight: 'bold', color: '#BBD3F0', display: 'inline-block'
+            }}>decisão.</span>
+          </div>
         </div>
-      </div>
+      </div> {/* FECHAMENTO CORRETO DA DIV ESQUERDA */}
 
       {/* LADO DIREITO: Formulário de Login */}
       <div style={{ 
@@ -101,43 +104,43 @@ export default function LoginPage() {
         padding: '40px',
         color: '#333333'
       }}>
-        <div style={{ width: '100%', maxWidth: '420px' }}>
+        <div style={{ width: '100%', maxWidth: '400px' }}>
           
           <h2 style={{ 
-            fontSize: '2.5rem', 
+            fontSize: '2.4rem', 
             fontWeight: 'bold', 
             textAlign: 'center', 
-            marginBottom: '5px',
-            color: '#222222',
-            fontFamily: 'serif'
+            marginBottom: '10px',
+            color: '#1a1a1a',
+            fontFamily: 'Georgia, serif'
           }}>
             Bem-vindo de volta !
           </h2>
           <p style={{ 
             textAlign: 'center', 
             color: '#666666', 
-            marginBottom: '45px',
-            fontSize: '1rem' 
+            marginBottom: '40px',
+            fontSize: '0.95rem' 
           }}>
             Faça login para acessar sua conta.
           </p>
 
-          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontWeight: 'bold', color: '#111111', fontSize: '1.1rem' }}>E-mail:</label>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontWeight: 'bold', color: '#1a1a1a', fontSize: '1rem' }}>E-mail:</label>
               <input
                 type="email"
                 placeholder="seu email@gmail.com"
                 style={{ 
-                  padding: '12px 16px', 
-                  borderRadius: '10px', 
-                  border: '1px solid #777777', 
+                  padding: '12px 14px', 
+                  borderRadius: '8px', 
+                  border: '1px solid #cccccc', 
                   backgroundColor: '#ffffff',
-                  fontSize: '1rem',
+                  fontSize: '0.95rem',
                   outline: 'none',
                   color: '#333333',
-                  boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.1)'
+                  transition: 'border-color 0.2s'
                 }}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -145,20 +148,19 @@ export default function LoginPage() {
               />
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', position: 'relative' }}>
-              <label style={{ fontWeight: 'bold', color: '#111111', fontSize: '1.1rem' }}>Senha:</label>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontWeight: 'bold', color: '#1a1a1a', fontSize: '1rem' }}>Senha:</label>
               <input
                 type="password"
                 placeholder="••••••••"
                 style={{ 
-                  padding: '12px 16px', 
-                  borderRadius: '10px', 
-                  border: '1px solid #777777', 
+                  padding: '12px 14px', 
+                  borderRadius: '8px', 
+                  border: '1px solid #cccccc', // Borda suave como no Figma
                   backgroundColor: '#ffffff',
-                  fontSize: '1rem',
+                  fontSize: '0.95rem',
                   outline: 'none',
-                  color: '#333333',
-                  boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.1)'
+                  color: '#333333'
                 }}
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
@@ -167,9 +169,9 @@ export default function LoginPage() {
 
               <Link href="/esqueci-senha" style={{ 
                 textAlign: 'right', 
-                fontSize: '0.85rem', 
-                color: '#555555', 
-                marginTop: '5px',
+                fontSize: '0.8rem', 
+                color: '#666666', 
+                marginTop: '4px',
                 textDecoration: 'none' 
               }}>
                 [Esqueci minha senha]
@@ -179,24 +181,26 @@ export default function LoginPage() {
             <button 
               type="submit" 
               style={{ 
-                backgroundColor: '#98bae3', 
-                color: '#111111', 
+                backgroundColor: '#9bc2e6', // Azul botão do Figma
+                color: '#1a1a1a', 
                 border: 'none', 
                 padding: '14px', 
                 borderRadius: '8px', 
-                fontSize: '1.1rem', 
+                fontSize: '1rem', 
                 fontWeight: 'bold',
                 cursor: 'pointer',
-                marginTop: '15px',
-                boxShadow: '0 4px 6px rgba(0,0,0,0.05)'
+                marginTop: '10px',
+                transition: 'background-color 0.2s'
               }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#89b2db'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#9bc2e6'}
             >
               Entrar
             </button>
           </form>
 
-          <p style={{ textAlign: 'center', marginTop: '30px', color: '#333333', fontSize: '0.95rem' }}>
-            Ainda não tem uma conta? <Link href="/cadastro" style={{ color: '#7b92ce', textDecoration: 'none' }}>Cadastra-se</Link>
+          <p style={{ textAlign: 'center', marginTop: '25px', color: '#666666', fontSize: '0.9rem' }}>
+            Ainda não tem uma conta? <Link href="/cadastro" style={{ color: '#82a3e8', fontWeight: '500', textDecoration: 'none' }}>Cadastra-se</Link>
           </p>
 
         </div>

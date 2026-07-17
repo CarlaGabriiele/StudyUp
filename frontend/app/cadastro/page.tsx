@@ -61,19 +61,42 @@ export default function CadastroPage() {
         alignItems: 'flex-end', 
         justifyContent: 'center',
         padding: '0px', 
-        overflow: 'hidden'
+        overflow: 'hidden',
+        position: 'relative'
       }}>
         <img 
           src="/cadastro-banner.png" 
           alt="StudyUp - Seu futuro começa com uma decisão" 
           style={{ 
             width: '100%', 
-            height: '80%', 
+            height: '65%', 
             objectFit: 'cover', 
             objectPosition: 'bottom center' 
           }} 
         />
-      </div>
+        
+        <div style={{
+          position: 'absolute',
+          right: '5%',
+          bottom: '33%',
+          maxWidth: '280px',
+          textAlign: 'right',
+          color: '#ffffff',
+          fontFamily: 'Georgia, serif',
+          lineHeight: '1.1',
+          zIndex: 10
+        }}>
+          <div style={{ display: 'flex', fontWeight: 'bold', flexDirection: 'column', gap: '4px' }}>
+            <span style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Seu</span>
+            <span style={{ fontSize: '3rem', fontWeight: 'bold' }}>futuro</span>
+            <span style={{ fontSize: '3rem', fontWeight: 'bold' }}>Começa</span>
+            <span style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>Com uma</span>
+            <span style={{
+              fontSize: '3rem', fontWeight: 'bold', color: '#BBD3F0', display: 'inline-block'
+            }}>decisão.</span>
+          </div>
+        </div>
+      </div> {/* FECHAMENTO CORRETO DA DIV ESQUERDA */}
 
       <div style={{ 
         flex: '1', 
