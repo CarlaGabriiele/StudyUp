@@ -13,10 +13,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.on_event("startup")
-def on_startup():
-    create_db_and_tables()
-
 app.include_router(auth.router)
 app.include_router(questoes.router)
 app.include_router(simulados.router)
