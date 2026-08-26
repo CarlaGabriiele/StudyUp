@@ -14,8 +14,8 @@ export default function LoginPage() {
 
     // 1. Criar um formato de formulário compatível com o OAuth2 do FastAPI
     const formData = new URLSearchParams();
-    formData.append("username", email); // O FastAPI exige o nome 'username'
-    formData.append("password", senha); // O FastAPI exige o nome 'password'
+    formData.append("username", email); 
+    formData.append("password", senha); 
 
     const response = await fetch("http://127.0.0.1:8000/login", {
       method: "POST",
@@ -52,13 +52,13 @@ export default function LoginPage() {
       {/* LADO ESQUERDO: Imagem/Banner Promocional com o Texto Interno */}
       <div style={{ 
         flex: '1', 
-        backgroundColor: '#0c1b33', // Azul escuro idêntico ao Figma
+        backgroundColor: '#0c1b33', 
         display: 'flex', 
         alignItems: 'flex-end', 
         justifyContent: 'center',
         padding: '0px',
         overflow: 'hidden',
-        position: 'relative' // Referência para o posicionamento absoluto do texto
+        position: 'relative'
       }}>
         <img 
           src="/login-banner.png" 
@@ -156,7 +156,7 @@ export default function LoginPage() {
                 style={{ 
                   padding: '12px 14px', 
                   borderRadius: '8px', 
-                  border: '1px solid #cccccc', // Borda suave como no Figma
+                  border: '1px solid #cccccc', 
                   backgroundColor: '#ffffff',
                   fontSize: '0.95rem',
                   outline: 'none',
@@ -181,7 +181,7 @@ export default function LoginPage() {
             <button 
               type="submit" 
               style={{ 
-                backgroundColor: '#9bc2e6', // Azul botão do Figma
+                backgroundColor: '#9bc2e6', 
                 color: '#1a1a1a', 
                 border: 'none', 
                 padding: '14px', 

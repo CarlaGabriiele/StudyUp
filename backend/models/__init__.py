@@ -9,8 +9,11 @@ class RegistroDesempenho(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     estudante_id: int = Field(foreign_key="usuario.id")
     questao_id: int = Field(foreign_key="questao.id")
-    resultado: bool
-    tempo_gasto: int
+    simulado_id: Optional[int] = Field(default=None, foreign_key="simulado.id")
+    
+    alternativa_escolhida: str
+    resultado: bool  
+    tempo_gasto: int  
 
     estudante: "Usuario" = Relationship(back_populates="registros_desempenho")
     questao: "Questao" = Relationship(back_populates="registros_desempenho")
@@ -26,7 +29,7 @@ class Usuario(SQLModel, table=True):
 class Questao(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     enunciado: str
-    alternativas: str
+    alternativas: str  
     resposta_correta: str
     nivel_dificuldade: str
     disciplina: str
@@ -46,3 +49,4 @@ class ConteudoTeorico(SQLModel, table=True):
     titulo: str
     url_video: str
     disciplina: str
+    concluido: bool = Field(default=False)
