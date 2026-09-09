@@ -18,11 +18,13 @@ def responder_questao(
     if not questao:
         raise HTTPException(status_code=404, detail="Questão não encontrada.")
     
-    acertou = (data.alternativa_escolhida.strip().upper() == questao.resposta_correta.strip().upper())
+    resposta_aluno = data.alternativa_escolhida.strip().upper()
+    acertou = (resposta_aluno == questao.resposta_correta.strip().upper())
     
     registro = RegistroDesempenho(
         estudante_id=current_user.id,
         questao_id=questao.id,
+        alternativa_escolhida=resposta_aluno,
         resultado=acertou,
         tempo_gasto=data.tempo_gasto
     )
