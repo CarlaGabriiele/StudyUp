@@ -1,10 +1,7 @@
 from sqlmodel import Session, select
 from database import engine
-from models import Questao, Simulado, SimuladoQuestao
+from models import Questao, Simulado, SimuladoQuestao, ConteudoTeorico
 
-# Banco de questões em estilo ENEM (conteúdo original, não copiado de provas reais),
-# cobrindo as duas grandes áreas do exame: Ciências da Natureza e Matemática,
-# e Linguagens e Ciências Humanas.
 questoes_mock = [
     # ---------------- MATEMÁTICA ----------------
     {
@@ -184,6 +181,28 @@ questoes_mock = [
     },
 ]
 
+# Aulas de exemplo para o ENEM
+aulas_mock = [
+    {
+        "titulo": "Matemática: Equações do 2º Grau",
+        "disciplina": "Matemática",
+        "url_video": "https://youtu.be/O52z4JSNisI?si=XvHXTR-t3QksiDbs",
+        "descricao": "Revisão prática de conceitos essenciais para o ENEM."
+    },
+    {
+        "titulo": "História: Era Vargas",
+        "disciplina": "Ciências Humanas",
+        "url_video": "https://youtu.be/C6IUgc_arhc?si=CcmEbT80Qu_HI0VC",
+        "descricao": "Principais pontos cobrados na prova de Ciências Humanas."
+    },
+    {
+        "titulo": "Física: Ondas",
+        "disciplina": "Ciências Natureza",
+        "url_video": "https://youtu.be/4w3PcXQ6Wd0?si=wwXcl4wucYYjopoP",
+        "descricao": "Tudo sobre ondas para o ENEM."
+    },
+]
+
 
 def seed_questoes(session: Session):
     """Cadastra as questões, caso o banco ainda não tenha nenhuma."""
@@ -232,7 +251,7 @@ def seed_simulados(session: Session, questoes):
         {
             "titulo": "Simulado Relâmpago",
             "descricao": "Uma versão curta, com 5 questões variadas, ideal para testar rapidamente o cronômetro.",
-            "disciplinas": None,  # preenchido à parte, com 1 questão de cada uma das 5 primeiras disciplinas
+            "disciplinas": None,
         },
     ]
 
@@ -254,10 +273,25 @@ def seed_simulados(session: Session, questoes):
         print(f"✅ Simulado '{simulado.titulo}' criado com {len(questoes_do_simulado)} questões.")
 
 
+def seed_aulas(session: Session):
+    """Cadastra as videoaulas no banco de dados."""
+    if session.exec(select(ConteudoTeorico)).first():
+        print("⚠️  O banco já possui videoaulas cadastradas — nenhuma nova aula foi criada.")
+        return
+
+    for a_data in aulas_mock:
+        nova_aula = ConteudoTeorico(**a_data)
+        session.add(nova_aula)
+
+    session.commit()
+    print(f"✅ {len(aulas_mock)} videoaulas cadastradas com sucesso no banco de dados!")
+
+
 def seed_tudo():
     with Session(engine) as session:
         questoes = seed_questoes(session)
         seed_simulados(session, questoes)
+        seed_aulas(session)
 
 
 if __name__ == "__main__":

@@ -138,8 +138,8 @@ export default function CadastroPage() {
                 style={{ 
                   padding: '12px', 
                   borderRadius: '8px', 
-                  border: '1px solid #b5b0a7', 
-                  backgroundColor: '#eaddca',
+                  border: '1px solid #cccccc', 
+                  backgroundColor: '#ffffff',
                   fontSize: '1rem',
                   outline: 'none',
                   color: '#333'
@@ -158,8 +158,8 @@ export default function CadastroPage() {
                 style={{ 
                   padding: '12px', 
                   borderRadius: '8px', 
-                  border: '1px solid #b5b0a7', 
-                  backgroundColor: '#eaddca',
+                  border: '1px solid #cccccc', 
+                  backgroundColor: '#ffffff',
                   fontSize: '1rem',
                   outline: 'none',
                   color: '#333'
@@ -178,8 +178,8 @@ export default function CadastroPage() {
                 style={{ 
                   padding: '12px', 
                   borderRadius: '8px', 
-                  border: '1px solid #b5b0a7', 
-                  backgroundColor: '#eaddca',
+                  border: '1px solid #cccccc', 
+                  backgroundColor: '#ffffff',
                   fontSize: '1rem',
                   outline: 'none',
                   color: '#333'
@@ -198,8 +198,8 @@ export default function CadastroPage() {
                 style={{ 
                   padding: '12px', 
                   borderRadius: '8px', 
-                  border: '1px solid #b5b0a7', 
-                  backgroundColor: '#eaddca',
+                  border: '1px solid #cccccc', 
+                  backgroundColor: '#ffffff',
                   fontSize: '1rem',
                   outline: 'none',
                   color: '#333'
@@ -214,7 +214,7 @@ export default function CadastroPage() {
               type="submit" 
               style={{ 
                 backgroundColor: '#8da9c4', 
-                color: '#ffffff', 
+                color: '#0e0c0c', 
                 border: 'none', 
                 padding: '14px', 
                 borderRadius: '8px', 
