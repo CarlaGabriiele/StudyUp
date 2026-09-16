@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
 from database import get_session
-from models import Simulado, Questao, SimuladoQuestao, Usuario
+from models import Simulado, Questao, SimuladoQuestao, Usuario, RegistroDesempenho
 from routes.auth import get_current_user
 from pydantic import BaseModel
 from typing import Dict

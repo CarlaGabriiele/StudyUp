@@ -18,25 +18,43 @@ export default function Home() {
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', fontFamily: 'sans-serif', color: '#333' }}>
       
-      {/* Navbar Integrada na Home - Atualizada para o novo design condicional */}
-      <nav style={{ 
-        display: "flex", 
-        justifyContent: "space-between", 
-        alignItems: "center", 
-        padding: "20px 50px", 
-        backgroundColor: "#0d1b2a", // Mantendo a cor da hero section para ficar contínuo
-        color: "#ffffff" 
+      {/* Navbar - fundo branco, separada da hero section, igual ao protótipo */}
+      <nav style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "16px 50px",
+        backgroundColor: "#ffffff",
+        color: "#0d1b2a",
+        borderBottom: "1px solid #eef0f3",
       }}>
-        <div style={{ fontSize: "1.8rem", fontWeight: "bold", fontFamily: "serif", letterSpacing: "1px" }}>
-          StudyUp
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <div style={{
+            width: "38px",
+            height: "38px",
+            borderRadius: "9px",
+            backgroundColor: "#0d1b2a",
+            color: "#ffffff",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "1.2rem",
+            flexShrink: 0,
+          }}>
+            🎓
+          </div>
+          <div style={{ lineHeight: 1.15 }}>
+            <div style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0d1b2a" }}>StudyUp</div>
+            <div style={{ fontSize: "0.7rem", color: "#8a93a3", fontWeight: 500 }}>Foco no ENEM</div>
+          </div>
         </div>
-        <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "28px", alignItems: "center" }}>
           {isLogged ? (
             <>
-              <Link href="/dashboard" style={{ textDecoration: "none", color: "#ffffff", fontWeight: "bold" }}>
+              <Link href="/dashboard" style={{ textDecoration: "none", color: "#0d1b2a", fontWeight: 600, fontSize: "0.95rem" }}>
                 Meu Dashboard
               </Link>
-              <button 
+              <button
                 onClick={() => {
                   localStorage.removeItem('studyup_token');
                   setIsLogged(false);
@@ -48,11 +66,11 @@ export default function Home() {
             </>
           ) : (
             <>
-              <Link href="/login" style={{ textDecoration: "none", color: "#eaddca", fontWeight: "bold", padding: "10px 20px" }}>
-                Entrar
+              <Link href="/login" style={{ textDecoration: "none", color: "#0d1b2a", fontWeight: 500, fontSize: "0.95rem" }}>
+                Login
               </Link>
-              <Link href="/cadastro" style={{ textDecoration: "none", color: "#0f223d", backgroundColor: "#eaddca", fontWeight: "bold", padding: "10px 24px", borderRadius: "8px", transition: "0.3s" }}>
-                Cadastrar
+              <Link href="/cadastro" style={{ textDecoration: "none", color: "#0d1b2a", fontWeight: 500, fontSize: "0.95rem" }}>
+                Cadastro
               </Link>
             </>
           )}
@@ -139,36 +157,30 @@ export default function Home() {
           Tudo o que você precisa para ir bem no ENEM
         </h2>
 
-        <div style={{ maxWidth: '1100px', margin: '0 auto', backgroundColor: '#0d1b2a', borderRadius: '16px', padding: '40px 20px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '25px' }}>
-          
+        <div style={{ maxWidth: '1100px', margin: '0 auto', backgroundColor: '#0d1b2a', borderRadius: '16px', padding: '40px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '25px' }}>
+
           {/* Card Recurso 1 */}
-          <div style={{ backgroundColor: '#ffffff', borderRadius: '12px', padding: '30px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', height: '250px' }}>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '1.5rem', marginBottom: '10px' }}>📝</div>
-              <h4 style={{ fontWeight: 'bold', marginBottom: '15px' }}>Banco de Questões</h4>
-              <p style={{ fontSize: '0.85rem', color: '#555', lineHeight: '1.5' }}>Milhares de questões comentadas e classificadas por assunto, ano e instituição.</p>
-            </div>
-            <button style={{ backgroundColor: '#90e0ef', color: '#03045e', border: 'none', borderRadius: '6px', padding: '10px 20px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.85rem', width: '80%' }}>Explorar questões →</button>
+          <div style={{ backgroundColor: '#ffffff', borderRadius: '12px', padding: '26px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left' }}>
+            <div style={{ width: '38px', height: '38px', borderRadius: '9px', backgroundColor: '#bbd0ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', marginBottom: '14px' }}>📝</div>
+            <h4 style={{ fontWeight: 700, marginBottom: '8px', fontSize: '1rem', color: '#111' }}>Banco de Questões</h4>
+            <p style={{ fontSize: '0.85rem', color: '#666', lineHeight: '1.5', marginBottom: '18px' }}>Milhares de questões comentadas e classificadas por assunto, ano e instituição.</p>
+            <button style={{ backgroundColor: '#dbeafe', color: '#1d4ed8', border: 'none', borderRadius: '6px', padding: '8px 16px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}>Ver questões →</button>
           </div>
 
           {/* Card Recurso 2 */}
-          <div style={{ backgroundColor: '#ffffff', borderRadius: '12px', padding: '30px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', height: '250px' }}>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '1.5rem', marginBottom: '10px' }}>▶️</div>
-              <h4 style={{ fontWeight: 'bold', marginBottom: '15px' }}>Aulas Explicativas</h4>
-              <p style={{ fontSize: '0.85rem', color: '#555', lineHeight: '1.5' }}>Videoaulas objetivas e didáticas para reforçar o que realmente importa.</p>
-            </div>
-            <button style={{ backgroundColor: '#90e0ef', color: '#03045e', border: 'none', borderRadius: '6px', padding: '10px 20px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.85rem', width: '80%' }}>Ver aulas →</button>
+          <div style={{ backgroundColor: '#ffffff', borderRadius: '12px', padding: '26px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left' }}>
+            <div style={{ width: '38px', height: '38px', borderRadius: '9px', backgroundColor: '#bbd0ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', marginBottom: '14px' }}>▶️</div>
+            <h4 style={{ fontWeight: 700, marginBottom: '8px', fontSize: '1rem', color: '#111' }}>Aulas Explicativas</h4>
+            <p style={{ fontSize: '0.85rem', color: '#666', lineHeight: '1.5', marginBottom: '18px' }}>Videoaulas objetivas e didáticas para reforçar o que realmente importa.</p>
+            <button style={{ backgroundColor: '#dbeafe', color: '#1d4ed8', border: 'none', borderRadius: '6px', padding: '8px 16px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}>Ver aulas →</button>
           </div>
 
           {/* Card Recurso 3 */}
-          <div style={{ backgroundColor: '#ffffff', borderRadius: '12px', padding: '30px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', height: '250px' }}>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '1.5rem', marginBottom: '10px' }}>📈</div>
-              <h4 style={{ fontWeight: 'bold', marginBottom: '15px' }}>Desempenho</h4>
-              <p style={{ fontSize: '0.85rem', color: '#555', lineHeight: '1.5' }}>Acompanhe sua evolução por tema, disciplina e tipo de questão.</p>
-            </div>
-            <button style={{ backgroundColor: '#90e0ef', color: '#03045e', border: 'none', borderRadius: '6px', padding: '10px 20px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.85rem', width: '80%' }}>Ver desempenho →</button>
+          <div style={{ backgroundColor: '#ffffff', borderRadius: '12px', padding: '26px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left' }}>
+            <div style={{ width: '38px', height: '38px', borderRadius: '9px', backgroundColor: '#0d1b2a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', marginBottom: '14px' }}>📈</div>
+            <h4 style={{ fontWeight: 700, marginBottom: '8px', fontSize: '1rem', color: '#111' }}>Desempenho</h4>
+            <p style={{ fontSize: '0.85rem', color: '#666', lineHeight: '1.5', marginBottom: '18px' }}>Acompanhe sua evolução por tema, disciplina e tipo de questão.</p>
+            <button style={{ backgroundColor: '#dbeafe', color: '#1d4ed8', border: 'none', borderRadius: '6px', padding: '8px 16px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}>Ver desempenho →</button>
           </div>
 
         </div>

@@ -156,7 +156,6 @@ export default function SimuladoPage() {
     sessionStorage.setItem(chaveArmazenamento, JSON.stringify({ dataInicio: dataInicioRef.current, respostas }));
   }, [respostas, simulado, chaveArmazenamento]);
 
-  // Cronômetro: depende só da duração total, então trocar de questão NUNCA o reinicia.
   useEffect(() => {
     if (!simulado || resultado) return;
 
@@ -207,8 +206,6 @@ export default function SimuladoPage() {
     setFinalizando(true);
     setErroEnvio("");
 
-    // Converte a letra escolhida em cada questão para o texto da alternativa,
-    // que é o formato usado pelo backend para conferir o gabarito.
     const respostasTexto: Record<number, string> = {};
     for (const questao of questoes) {
       const letraEscolhida = respostas[questao.id];
@@ -223,21 +220,33 @@ export default function SimuladoPage() {
       Math.floor((Date.now() - (dataInicioRef.current ?? Date.now())) / 1000)
     );
 
-    try {
-      const token = localStorage.getItem("studyup_token");
-      const response = await fetch(`${API_URL}/simulados/${simulado.id}/submeter`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          respostas: respostasTexto,
-          tempo_total_segundos: decorrido,
-        }),
-      });
+    const MAX_TENTATIVAS = 3;
+    let ultimoErro: string | null = null;
 
-      const dados = await response.json();
+    for (let tentativa = 1; tentativa <= MAX_TENTATIVAS; tentativa++) {
+      let response: Response;
+
+      try {
+        const token = localStorage.getItem("studyup_token");
+        response = await fetch(`${API_URL}/simulados/${simulado.id}/submeter`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            respostas: respostasTexto,
+            tempo_total_segundos: decorrido,
+          }),
+        });
+      } catch (error) {
+        ultimoErro = "Não foi possível conectar com o servidor. Verifique sua internet e tente novamente.";
+        if (tentativa < MAX_TENTATIVAS) {
+          await new Promise((resolve) => setTimeout(resolve, 1000 * tentativa));
+          continue;
+        }
+        break;
+      }
 
       if (response.status === 401) {
         localStorage.removeItem("studyup_token");
@@ -245,21 +254,35 @@ export default function SimuladoPage() {
         return;
       }
 
-      if (!response.ok) {
-        setErroEnvio(dados.detail || "Não foi possível enviar as respostas do simulado.");
-        jaFinalizadoRef.current = false;
-        return;
+      let dados: any = null;
+      let corpoInvalido = false;
+      try {
+        dados = await response.json();
+      } catch {
+        corpoInvalido = true;
       }
 
-      // Só limpamos o progresso salvo depois de uma submissão bem-sucedida.
+      if (!response.ok) {
+        ultimoErro = corpoInvalido
+          ? `O servidor retornou um erro inesperado (status ${response.status}). Suas respostas NÃO foram enviadas — tente novamente ou avise o suporte.`
+          : dados?.detail || `Não foi possível enviar as respostas do simulado (status ${response.status}).`;
+
+        if (response.status >= 500 && tentativa < MAX_TENTATIVAS) {
+          await new Promise((resolve) => setTimeout(resolve, 1000 * tentativa));
+          continue;
+        }
+        break;
+      }
+
       sessionStorage.removeItem(chaveArmazenamento);
       setResultado(dados);
-    } catch (error) {
-      setErroEnvio("Não foi possível conectar com o servidor para enviar suas respostas.");
-      jaFinalizadoRef.current = false;
-    } finally {
       setFinalizando(false);
+      return;
     }
+
+    setErroEnvio(ultimoErro || "Não foi possível enviar as respostas do simulado.");
+    jaFinalizadoRef.current = false;
+    setFinalizando(false);
   }
 
   if (carregando) {
