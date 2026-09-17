@@ -18,6 +18,9 @@ export default function DashboardPage() {
   const [conteudos, setConteudos] = useState<any[]>([]);
   const [simulados, setSimulados] = useState<any[]>([]);
 
+  const [busca, setBusca] = useState("");
+  const [buscaFocada, setBuscaFocada] = useState(false);
+
   useEffect(() => {
     // Proteção de rota simples: verifica se o utilizador tem o token
     const token = localStorage.getItem("studyup_token");
@@ -113,6 +116,28 @@ export default function DashboardPage() {
     { label: "Configurações", icon: "⚙️", href: "/configuracoes" },
   ];
 
+  const termoBusca = busca.trim().toLowerCase();
+  const resultadosPaginas = termoBusca
+    ? menuItens.filter((item) => item.label.toLowerCase().includes(termoBusca))
+    : [];
+  const resultadosConteudos = termoBusca
+    ? conteudos
+        .filter(
+          (c) => c.titulo?.toLowerCase().includes(termoBusca) || c.disciplina?.toLowerCase().includes(termoBusca)
+        )
+        .slice(0, 5)
+    : [];
+  const resultadosSimulados = termoBusca
+    ? simulados
+        .filter(
+          (s) =>
+            s.titulo?.toLowerCase().includes(termoBusca) || (s.descricao ?? "").toLowerCase().includes(termoBusca)
+        )
+        .slice(0, 5)
+    : [];
+  const totalResultadosBusca = resultadosPaginas.length + resultadosConteudos.length + resultadosSimulados.length;
+  const mostrarResultadosBusca = buscaFocada && termoBusca.length > 0;
+
   return (
     <div style={{ display: "flex", minHeight: "100vh", backgroundColor: "#f5f7fa", fontFamily: "sans-serif" }}>
       {/* SIDEBAR */}
@@ -178,20 +203,140 @@ export default function DashboardPage() {
             borderBottom: "1px solid #e5e7eb",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              backgroundColor: "#f1f5f9",
-              borderRadius: "8px",
-              padding: "8px 14px",
-              width: "320px",
-              color: "#94a3b8",
-              fontSize: "0.85rem",
-            }}
-          >
-            🔍 <span>Buscar questões, aulas, temas...</span>
+          <div style={{ position: "relative", width: "320px" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                backgroundColor: "#f1f5f9",
+                borderRadius: "8px",
+                padding: "8px 14px",
+                width: "100%",
+                boxSizing: "border-box",
+              }}
+            >
+              <span>🔍</span>
+              <input
+                type="text"
+                placeholder="Buscar questões, aulas, temas..."
+                value={busca}
+                onChange={(e) => setBusca(e.target.value)}
+                onFocus={() => setBuscaFocada(true)}
+                onBlur={() => setTimeout(() => setBuscaFocada(false), 150)}
+                style={{
+                  border: "none",
+                  backgroundColor: "transparent",
+                  outline: "none",
+                  width: "100%",
+                  fontSize: "0.85rem",
+                  color: "#1e293b",
+                }}
+              />
+            </div>
+
+            {mostrarResultadosBusca && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "calc(100% + 6px)",
+                  left: 0,
+                  right: 0,
+                  backgroundColor: "#ffffff",
+                  borderRadius: "10px",
+                  boxShadow: "0 8px 24px rgba(15,23,42,0.12)",
+                  border: "1px solid #e5e7eb",
+                  padding: "8px",
+                  zIndex: 20,
+                  maxHeight: "360px",
+                  overflowY: "auto",
+                }}
+              >
+                {totalResultadosBusca === 0 ? (
+                  <p style={{ margin: "8px 12px", fontSize: "0.8rem", color: "#64748b" }}>
+                    Nenhum resultado encontrado para "{busca.trim()}".
+                  </p>
+                ) : (
+                  <>
+                    {resultadosPaginas.length > 0 && (
+                      <div style={{ marginBottom: "6px" }}>
+                        <p style={{ margin: "4px 12px", fontSize: "0.68rem", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase" }}>
+                          Páginas
+                        </p>
+                        {resultadosPaginas.map((item) => (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "10px",
+                              padding: "8px 12px",
+                              borderRadius: "8px",
+                              textDecoration: "none",
+                              color: "#0f172a",
+                              fontSize: "0.85rem",
+                              fontWeight: 600,
+                            }}
+                          >
+                            <span>{item.icon}</span>
+                            {item.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+
+                    {resultadosConteudos.length > 0 && (
+                      <div style={{ marginBottom: "6px" }}>
+                        <p style={{ margin: "4px 12px", fontSize: "0.68rem", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase" }}>
+                          Aulas
+                        </p>
+                        {resultadosConteudos.map((c) => (
+                          <Link
+                            key={c.id}
+                            href="/aulas"
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              padding: "8px 12px",
+                              borderRadius: "8px",
+                              textDecoration: "none",
+                            }}
+                          >
+                            <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#0f172a" }}>{c.titulo}</span>
+                            <span style={{ fontSize: "0.72rem", color: "#64748b" }}>{c.disciplina}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+
+                    {resultadosSimulados.length > 0 && (
+                      <div>
+                        <p style={{ margin: "4px 12px", fontSize: "0.68rem", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase" }}>
+                          Simulados
+                        </p>
+                        {resultadosSimulados.map((s) => (
+                          <Link
+                            key={s.id}
+                            href={`/simulados/${s.id}`}
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              padding: "8px 12px",
+                              borderRadius: "8px",
+                              textDecoration: "none",
+                            }}
+                          >
+                            <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#0f172a" }}>{s.titulo}</span>
+                            {s.descricao && <span style={{ fontSize: "0.72rem", color: "#64748b" }}>{s.descricao}</span>}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
           </div>
 
           <button

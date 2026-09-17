@@ -60,6 +60,7 @@ export default function QuestoesPage() {
 
   const [disciplinaSelecionada, setDisciplinaSelecionada] = useState("Todas");
   const [paginaAtual, setPaginaAtual] = useState(1);
+  const [busca, setBusca] = useState("");
 
   const temposInicio = useRef<Record<number, number>>({});
 
@@ -114,9 +115,16 @@ export default function QuestoesPage() {
   }, [questoes]);
 
   const questoesFiltradas = useMemo(() => {
-    if (disciplinaSelecionada === "Todas") return questoes;
-    return questoes.filter((q) => q.disciplina === disciplinaSelecionada);
-  }, [questoes, disciplinaSelecionada]);
+    const termo = busca.trim().toLowerCase();
+    return questoes.filter((q) => {
+      const atendeDisciplina = disciplinaSelecionada === "Todas" || q.disciplina === disciplinaSelecionada;
+      const atendeBusca =
+        termo.length === 0 ||
+        q.enunciado.toLowerCase().includes(termo) ||
+        q.disciplina.toLowerCase().includes(termo);
+      return atendeDisciplina && atendeBusca;
+    });
+  }, [questoes, disciplinaSelecionada, busca]);
 
   const totalPaginas = Math.max(1, Math.ceil(questoesFiltradas.length / QUESTOES_POR_PAGINA));
 
@@ -136,6 +144,11 @@ export default function QuestoesPage() {
 
   function handleMudarDisciplina(disciplina: string) {
     setDisciplinaSelecionada(disciplina);
+    setPaginaAtual(1);
+  }
+
+  function handleBuscar(valor: string) {
+    setBusca(valor);
     setPaginaAtual(1);
   }
 
@@ -337,11 +350,23 @@ export default function QuestoesPage() {
               borderRadius: "8px",
               padding: "8px 14px",
               width: "320px",
-              color: "#94a3b8",
-              fontSize: "0.85rem",
             }}
           >
-            🔍 <span>Buscar questões, aulas, temas...</span>
+            <span>🔍</span>
+            <input
+              type="text"
+              placeholder="Buscar questões, aulas, temas..."
+              value={busca}
+              onChange={(e) => handleBuscar(e.target.value)}
+              style={{
+                border: "none",
+                backgroundColor: "transparent",
+                outline: "none",
+                width: "100%",
+                fontSize: "0.85rem",
+                color: "#1e293b",
+              }}
+            />
           </div>
 
           <button
@@ -427,7 +452,9 @@ export default function QuestoesPage() {
           {questoesFiltradas.length === 0 ? (
             <div style={{ backgroundColor: "#ffffff", borderRadius: "14px", padding: "40px", textAlign: "center", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}>
               <p style={{ color: "#64748b", fontSize: "0.9rem", margin: 0 }}>
-                Nenhuma questão encontrada para esta disciplina.
+                {busca.trim()
+                  ? `Nenhuma questão encontrada para "${busca.trim()}".`
+                  : "Nenhuma questão encontrada para esta disciplina."}
               </p>
             </div>
           ) : (
