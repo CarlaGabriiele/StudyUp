@@ -186,21 +186,33 @@ aulas_mock = [
     {
         "titulo": "Matemática: Equações do 2º Grau",
         "disciplina": "Matemática",
-        "url_video": "https://youtu.be/O52z4JSNisI?si=XvHXTR-t3QksiDbs",
+        "url_video": "https://www.youtube.com/embed/tlskrkjRMsI",
         "descricao": "Revisão prática de conceitos essenciais para o ENEM."
     },
     {
         "titulo": "História: Era Vargas",
         "disciplina": "Ciências Humanas",
-        "url_video": "https://youtu.be/C6IUgc_arhc?si=CcmEbT80Qu_HI0VC",
+        "url_video": "https://www.youtube.com/embed/jQU6Ojetq8M",
         "descricao": "Principais pontos cobrados na prova de Ciências Humanas."
     },
     {
         "titulo": "Física: Ondas",
-        "disciplina": "Ciências Natureza",
-        "url_video": "https://youtu.be/4w3PcXQ6Wd0?si=wwXcl4wucYYjopoP",
+        "disciplina": "Ciências da Natureza",
+        "url_video": "https://www.youtube.com/embed/4w3PcXQ6Wd0",
         "descricao": "Tudo sobre ondas para o ENEM."
     },
+    {
+        "titulo": "Português: Figuras de Linguagem",
+        "disciplina": "Linguagens",
+        "url_video": "https://www.youtube.com/embed/S8kdKKdwv6E",
+        "descricao": "Principais figuras de linguagem cobradas no ENEM."
+    },
+    {
+        "titulo": "Redação: Estrutura da Dissertação",
+        "disciplina": "Redação",
+        "url_video": "https://www.youtube.com/embed/MeKHJVPNV30",
+        "descricao": "Como estruturar uma redação nota 1000 no ENEM."
+    }
 ]
 
 
