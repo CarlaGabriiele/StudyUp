@@ -65,7 +65,7 @@ Neste projeto, será utilizado como tecnologia de frontend, sendo responsável p
 1. Em uma nova janela do terminal, navegue até a pasta do frontend:
   cd frontend
 
-2.Instale as dependências do Node:
+2. Instale as dependências do Node:
   npm install
 
 3. Inicie o servidor de desenvolvimento:
