@@ -71,6 +71,7 @@ Neste projeto, será utilizado como tecnologia de frontend, sendo responsável p
 3. Inicie o servidor de desenvolvimento:
   npm run dev
 
+---
 ## Cronograma 
 | Semana | Período | Etapa | Atividades Detalhadas | Status |
 |--------|--------|-------|------------------------|------------|
