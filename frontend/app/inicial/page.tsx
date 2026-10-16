@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import Link from 'next/link';
 
 export default function HomePage() {
   return (
@@ -116,9 +117,9 @@ export default function HomePage() {
                   Milhares de questões comentadas e classificadas por assunto, ano e instituição.
                 </p>
               </div>
-              <button style={{ backgroundColor: '#a2caff', color: '#1e3a8a', border: 'none', borderRadius: '6px', padding: '9px 0', cursor: 'pointer', fontWeight: '600', fontSize: '0.78rem', width: '80%' }}>
+              <Link href="/questoes" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#a2caff', color: '#1e3a8a', border: 'none', borderRadius: '6px', padding: '9px 0', cursor: 'pointer', fontWeight: '600', fontSize: '0.78rem', width: '80%', textDecoration: 'none' }}>
                 Ver questões →
-              </button>
+              </Link>
             </div>
 
             {/* Bloco 2 - Aulas Explicativas */}
@@ -130,9 +131,9 @@ export default function HomePage() {
                   Videoaulas objetivas e didáticas para reforçar o que realmente importa.
                 </p>
               </div>
-              <button style={{ backgroundColor: '#a2caff', color: '#1e3a8a', border: 'none', borderRadius: '6px', padding: '9px 0', cursor: 'pointer', fontWeight: '600', fontSize: '0.78rem', width: '80%' }}>
+              <Link href="/aulas" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#a2caff', color: '#1e3a8a', border: 'none', borderRadius: '6px', padding: '9px 0', cursor: 'pointer', fontWeight: '600', fontSize: '0.78rem', width: '80%', textDecoration: 'none' }}>
                 Ver aulas →
-              </button>
+              </Link>
             </div>
 
             {/* Bloco 3 - Desempenho */}
@@ -144,9 +145,9 @@ export default function HomePage() {
                   Acompanhe sua evolução por tema, disciplina e tipo de questão.
                 </p>
               </div>
-              <button style={{ backgroundColor: '#a2caff', color: '#1e3a8a', border: 'none', borderRadius: '6px', padding: '9px 0', cursor: 'pointer', fontWeight: '600', fontSize: '0.78rem', width: '80%' }}>
+              <Link href="/desempenho" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#a2caff', color: '#1e3a8a', border: 'none', borderRadius: '6px', padding: '9px 0', cursor: 'pointer', fontWeight: '600', fontSize: '0.78rem', width: '80%', textDecoration: 'none' }}>
                 Ver desempenho →
-              </button>
+              </Link>
             </div>
 
           </div>

@@ -53,3 +53,10 @@ class ConteudoTeorico(SQLModel, table=True):
     url_video: str
     disciplina: str
     concluido: bool = Field(default=False)
+
+
+class AlternativaEliminada(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    estudante_id: int = Field(foreign_key="usuario.id")
+    questao_id: int = Field(foreign_key="questao.id")
+    letra: str

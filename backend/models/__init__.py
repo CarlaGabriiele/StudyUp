@@ -5,4 +5,5 @@ from .models import (
     Questao,
     Simulado,
     ConteudoTeorico,
-)
+    AlternativaEliminada,
+)

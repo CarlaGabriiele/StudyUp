@@ -1,19 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const [isLogged, setIsLogged] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    const token = localStorage.getItem("studyup_token");
-    if (token) {
-      setIsLogged(true);
-    }
-  }, []);
+  const isLogged = typeof window !== "undefined" ? Boolean(window.localStorage.getItem("studyup_token")) : false;
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', fontFamily: 'sans-serif', color: '#333' }}>
@@ -57,7 +47,7 @@ export default function Home() {
               <button
                 onClick={() => {
                   localStorage.removeItem('studyup_token');
-                  setIsLogged(false);
+                  window.location.reload();
                 }}
                 style={{ background: '#e74c3c', color: 'white', border: 'none', padding: '8px 20px', cursor: 'pointer', borderRadius: '6px', fontWeight: 'bold' }}
               >
@@ -164,7 +154,7 @@ export default function Home() {
             <div style={{ width: '38px', height: '38px', borderRadius: '9px', backgroundColor: '#bbd0ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', marginBottom: '14px' }}>📝</div>
             <h4 style={{ fontWeight: 700, marginBottom: '8px', fontSize: '1rem', color: '#111' }}>Banco de Questões</h4>
             <p style={{ fontSize: '0.85rem', color: '#666', lineHeight: '1.5', marginBottom: '18px' }}>Milhares de questões comentadas e classificadas por assunto, ano e instituição.</p>
-            <button style={{ backgroundColor: '#dbeafe', color: '#1d4ed8', border: 'none', borderRadius: '6px', padding: '8px 16px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}>Ver questões →</button>
+            <Link href="/questoes" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#dbeafe', color: '#1d4ed8', border: 'none', borderRadius: '6px', padding: '8px 16px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem', textDecoration: 'none' }}>Ver questões →</Link>
           </div>
 
           {/* Card Recurso 2 */}
@@ -172,7 +162,7 @@ export default function Home() {
             <div style={{ width: '38px', height: '38px', borderRadius: '9px', backgroundColor: '#bbd0ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', marginBottom: '14px' }}>▶️</div>
             <h4 style={{ fontWeight: 700, marginBottom: '8px', fontSize: '1rem', color: '#111' }}>Aulas Explicativas</h4>
             <p style={{ fontSize: '0.85rem', color: '#666', lineHeight: '1.5', marginBottom: '18px' }}>Videoaulas objetivas e didáticas para reforçar o que realmente importa.</p>
-            <button style={{ backgroundColor: '#dbeafe', color: '#1d4ed8', border: 'none', borderRadius: '6px', padding: '8px 16px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}>Ver aulas →</button>
+            <Link href="/aulas" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#dbeafe', color: '#1d4ed8', border: 'none', borderRadius: '6px', padding: '8px 16px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem', textDecoration: 'none' }}>Ver aulas →</Link>
           </div>
 
           {/* Card Recurso 3 */}
@@ -180,7 +170,7 @@ export default function Home() {
             <div style={{ width: '38px', height: '38px', borderRadius: '9px', backgroundColor: '#0d1b2a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', marginBottom: '14px' }}>📈</div>
             <h4 style={{ fontWeight: 700, marginBottom: '8px', fontSize: '1rem', color: '#111' }}>Desempenho</h4>
             <p style={{ fontSize: '0.85rem', color: '#666', lineHeight: '1.5', marginBottom: '18px' }}>Acompanhe sua evolução por tema, disciplina e tipo de questão.</p>
-            <button style={{ backgroundColor: '#dbeafe', color: '#1d4ed8', border: 'none', borderRadius: '6px', padding: '8px 16px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}>Ver desempenho →</button>
+            <Link href="/desempenho" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#dbeafe', color: '#1d4ed8', border: 'none', borderRadius: '6px', padding: '8px 16px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem', textDecoration: 'none' }}>Ver desempenho →</Link>
           </div>
 
         </div>

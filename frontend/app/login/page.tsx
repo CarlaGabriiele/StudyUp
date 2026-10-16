@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { API_URL } from "../lib/api";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ export default function LoginPage() {
     formData.append("username", email); 
     formData.append("password", senha); 
 
-    const response = await fetch("http://127.0.0.1:8000/login", {
+    const response = await fetch(`${API_URL}/login`, {
       method: "POST",
       // 2. Alterar o Content-Type para formulário
       headers: { "Content-Type": "application/x-www-form-urlencoded" },

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-const API_URL = "http://127.0.0.1:8000";
+import { API_URL } from "../lib/api";
 const QUESTOES_POR_PAGINA = 5;
 
 type Alternativa = { letra: string; texto: string };
@@ -57,6 +57,7 @@ export default function QuestoesPage() {
   const [usuario, setUsuario] = useState<any>(null);
   const [questoes, setQuestoes] = useState<Questao[]>([]);
   const [respostas, setRespostas] = useState<Record<number, RespostaEstado>>({});
+  const [eliminadas, setEliminadas] = useState<Record<number, string[]>>({});
 
   const [disciplinaSelecionada, setDisciplinaSelecionada] = useState("Todas");
   const [paginaAtual, setPaginaAtual] = useState(1);
@@ -75,9 +76,10 @@ export default function QuestoesPage() {
       try {
         const headers = { Authorization: `Bearer ${token}` };
 
-        const [resMe, resQuestoes] = await Promise.all([
+        const [resMe, resQuestoes, resEliminadas] = await Promise.all([
           fetch(`${API_URL}/me`, { headers }),
           fetch(`${API_URL}/questoes`, { headers }),
+          fetch(`${API_URL}/questoes/alternativas-eliminadas`, { headers }),
         ]);
 
         if (resMe.status === 401 || resQuestoes.status === 401) {
@@ -87,6 +89,15 @@ export default function QuestoesPage() {
         }
 
         if (resMe.ok) setUsuario(await resMe.json());
+
+        if (resEliminadas.ok) {
+          const dadosEliminadas: { questao_id: number; letra: string }[] = await resEliminadas.json();
+          const agrupadas: Record<number, string[]> = {};
+          dadosEliminadas.forEach((e) => {
+            agrupadas[e.questao_id] = [...(agrupadas[e.questao_id] ?? []), e.letra];
+          });
+          setEliminadas(agrupadas);
+        }
 
         if (resQuestoes.ok) {
           const dados: Questao[] = await resQuestoes.json();
@@ -169,6 +180,44 @@ export default function QuestoesPage() {
         },
       };
     });
+  }
+
+  async function handleEliminarAlternativa(questaoId: number, letra: string) {
+    const jaEliminada = (eliminadas[questaoId] ?? []).includes(letra);
+
+    try {
+      const token = localStorage.getItem("studyup_token");
+      const response = await fetch(`${API_URL}/questoes/${questaoId}/alternativas-eliminadas/${letra}`, {
+        method: jaEliminada ? "DELETE" : "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem("studyup_token");
+        router.push("/login");
+        return;
+      }
+
+      if (!response.ok) return;
+
+      setEliminadas((prev) => {
+        const atuais = prev[questaoId] ?? [];
+        return {
+          ...prev,
+          [questaoId]: jaEliminada ? atuais.filter((l) => l !== letra) : [...atuais, letra],
+        };
+      });
+
+      // Se a alternativa eliminada estava marcada, desmarca
+      if (!jaEliminada) {
+        setRespostas((prev) => {
+          if (prev[questaoId]?.selecionada !== letra) return prev;
+          return { ...prev, [questaoId]: { ...prev[questaoId], selecionada: null } };
+        });
+      }
+    } catch (error) {
+      setErro("Não foi possível conectar com o servidor.");
+    }
   }
 
   async function handleResponder(questao: Questao) {
@@ -514,6 +563,7 @@ export default function QuestoesPage() {
                         const selecionadaPeloAluno = estado.selecionada === alt.letra;
                         const ehGabarito = estado.respondido && estado.gabarito?.trim().toUpperCase() === alt.texto.trim().toUpperCase();
                         const ehErroDoAluno = estado.respondido && selecionadaPeloAluno && !ehGabarito;
+                        const eliminada = !estado.respondido && (eliminadas[questao.id] ?? []).includes(alt.letra);
 
                         let backgroundColor = "#ffffff";
                         let borderColor = "#e2e8f0";
@@ -536,10 +586,10 @@ export default function QuestoesPage() {
                         }
 
                         return (
+                          <div key={alt.letra} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                           <button
-                            key={alt.letra}
                             onClick={() => handleSelecionarAlternativa(questao.id, alt.letra)}
-                            disabled={estado.respondido}
+                            disabled={estado.respondido || eliminada}
                             style={{
                               display: "flex",
                               alignItems: "center",
@@ -552,8 +602,10 @@ export default function QuestoesPage() {
                               color: corTexto,
                               fontSize: "0.88rem",
                               fontWeight: selecionadaPeloAluno || ehGabarito ? 700 : 500,
-                              cursor: estado.respondido ? "default" : "pointer",
-                              width: "100%",
+                              cursor: estado.respondido ? "default" : eliminada ? "not-allowed" : "pointer",
+                              flex: 1,
+                              opacity: eliminada ? 0.45 : 1,
+                              textDecoration: eliminada ? "line-through" : "none",
                             }}
                           >
                             <span
@@ -576,6 +628,24 @@ export default function QuestoesPage() {
                             {ehGabarito && <span style={{ marginLeft: "auto" }}>✅</span>}
                             {ehErroDoAluno && <span style={{ marginLeft: "auto" }}>❌</span>}
                           </button>
+                          {!estado.respondido && (
+                            <button
+                              onClick={() => handleEliminarAlternativa(questao.id, alt.letra)}
+                              title={eliminada ? "Restaurar alternativa" : "Eliminar alternativa"}
+                              style={{
+                                background: "none",
+                                border: "1px solid #e2e8f0",
+                                borderRadius: "8px",
+                                cursor: "pointer",
+                                padding: "8px 10px",
+                                fontSize: "1rem",
+                                opacity: eliminada ? 1 : 0.7,
+                              }}
+                            >
+                              ✂️
+                            </button>
+                          )}
+                          </div>
                         );
                       })}
                     </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { API_URL } from "../lib/api";
 
 export default function RedefinirSenhaPage() {
   const [token, setToken] = useState("");
@@ -18,7 +19,7 @@ export default function RedefinirSenhaPage() {
       return;
     }
 
-    const response = await fetch("http://127.0.0.1:8000/redefinir-senha", {
+    const response = await fetch(`${API_URL}/redefinir-senha`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token, nova_senha: novaSenha }),
