@@ -28,6 +28,49 @@ O NextJS é um framework baseado em React utilizado para o desenvolvimento de ap
 Neste projeto, será utilizado como tecnologia de frontend, sendo responsável pela interface do usuário e comunicação com a API REST.
 
 
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- **Frontend:** Next.js (React), TypeScript
+- **Backend:** FastAPI, SQLModel, SQLite, Uvicorn
+
+---
+
+
+## 🚀 Como Executar o Projeto
+
+### 📋 Pré-requisitos
+- **Node.js** (v18 ou superior)
+- **Python** (v3.10 ou superior)
+
+---
+
+### Executando o Backend (FastAPI)
+
+1. Abra o terminal na raiz do projeto e acesse a pasta do backend:
+   cd backend
+
+2. Crie e ative o ambiente virtual:
+  python -m venv venv
+  venv\Scripts\activate
+
+3. Instale as dependências:
+  pip install -r requirements.txt
+
+4. (Opcional) Popule o banco de dados inicial com questões e aulas:
+  python seed.py
+
+### Executando o Frontend (Next.js)
+1. Em uma nova janela do terminal, navegue até a pasta do frontend:
+  cd frontend
+
+2.Instale as dependências do Node:
+  npm install
+
+3. Inicie o servidor de desenvolvimento:
+  npm run dev
+
 ## Cronograma 
 | Semana | Período | Etapa | Atividades Detalhadas | Status |
 |--------|--------|-------|------------------------|------------|
