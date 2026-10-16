@@ -46,7 +46,7 @@ Neste projeto, será utilizado como tecnologia de frontend, sendo responsável p
 
 ---
 
-### Executando o Backend (FastAPI)
+## Executando o Backend (FastAPI)
 
 1. Abra o terminal na raiz do projeto e acesse a pasta do backend:
    cd backend
@@ -61,7 +61,7 @@ Neste projeto, será utilizado como tecnologia de frontend, sendo responsável p
 4. (Opcional) Popule o banco de dados inicial com questões e aulas:
   python seed.py
 
-### Executando o Frontend (Next.js)
+## Executando o Frontend (Next.js)
 1. Em uma nova janela do terminal, navegue até a pasta do frontend:
   cd frontend
 
